@@ -90,7 +90,7 @@ private:
 	UPROPERTY()
 	UHierarchicalInstancedStaticMeshComponent* VoxelHISM;
 
-	// Array of instance indices for each voxel
+	// Array of instance indices for each Chunk
 	TArray<int32> VoxelInstanceIndices;
 
 	// Helper to get the index of a voxel in the array

@@ -24,16 +24,6 @@ AAvatarBase::AAvatarBase()
 
 	// Set the look up rate for the character
 	BaseLookUpRate = 45.0f;
-
-	// Set Physics
-	GetCharacterMovement()->bOrientRotationToMovement = true; // Character moves in the direction of input...
-	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f); // ...at this rotation rate
-	GetCharacterMovement()->JumpZVelocity = 600.0f;
-	GetCharacterMovement()->AirControl = 0.2f;
-	GetCharacterMovement()->MaxStepHeight = 45.0f;
-	GetCharacterMovement()->SetWalkableFloorAngle(45.0f);
-	GetCharacterMovement()->bConstrainToPlane = true;
-	GetCharacterMovement()->bSnapToPlaneAtStart = true;
 }
 
 // Called when the game starts or when spawned
@@ -55,6 +45,8 @@ void AAvatarBase::BeginPlay()
 void AAvatarBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	GetLookAt();
 
 }
 
@@ -135,10 +127,67 @@ void AAvatarBase::Sprint(const FInputActionValue& Value)
 // Called when the player presses the left click key
 void AAvatarBase::LeftClick(const FInputActionValue& Value)
 {
-	// If the player is left clicking
-	if (Value.Get<bool>())
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Left Click"));
+
+
+}
+
+
+void AAvatarBase::GetLookAt()
+{
+	// Get the player controller
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	if (!PlayerController)
 	{
-		// Left click
-		LeftClick(Value);
+		return;
 	}
+
+	// Get the camera location and forward vector
+	FVector CameraLocation;
+	FRotator CameraRotation;
+	PlayerController->GetPlayerViewPoint(CameraLocation, CameraRotation);
+	FVector ForwardVector = CameraRotation.Vector();
+
+	// Calculate the end location based on the camera's forward vector
+	FVector End = CameraLocation + (ForwardVector * 1000.0f);
+
+	// Create a collision query
+	FCollisionQueryParams CollisionParams;
+	CollisionParams.AddIgnoredActor(this);
+
+	// Create a hit result
+	FHitResult HitResult;
+
+	// Perform the line trace
+	GetWorld()->LineTraceSingleByChannel(HitResult, CameraLocation, End, ECollisionChannel::ECC_WorldDynamic, CollisionParams);
+	DrawDebugLine(GetWorld(), CameraLocation, End, FColor::Red, false, 1.0f, 0, 1.0f);
+
+	// If the line trace hits something
+	if (HitResult.bBlockingHit)
+	{
+		// Get the hit location
+		FVector HitLocation = HitResult.ImpactPoint;
+		TracedLocation = HitLocation;
+
+		// Get the hit actor
+		AActor* HitActor = HitResult.GetActor();
+
+		// If the hit actor is valid
+		if (HitActor)
+		{
+			// Get the hit actor's name
+			FString HitActorName = HitActor->GetName();
+
+			// Print the hit actor's name
+			UE_LOG(LogTemp, Warning, TEXT("Hit Actor: %s"), *HitActorName);
+		}
+
+		// Print the hit location
+		UE_LOG(LogTemp, Warning, TEXT("Hit Location: %s"), *HitLocation.ToString());
+	}
+}
+
+void AAvatarBase::RemoveBlock()
+{
+
 }

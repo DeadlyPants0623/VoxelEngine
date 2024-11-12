@@ -8,6 +8,7 @@
 #include "InputAction.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "VoxelChunk.h"
 #include "AvatarBase.generated.h"
 
 UCLASS()
@@ -48,6 +49,13 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enhanced Input", meta = (AllowPrivateAccess = "true"))
 	class UInputAction* LeftClickAction;
 
+private:
+	float WalkSpeed;
+	float SprintSpeed;
+	float BaseTurnRate;
+	float BaseLookUpRate;
+	FVector TracedLocation;
+
 	// Enhanced Movement functions
 	void MoveForward(const FInputActionValue& Value);
 	void MoveRight(const FInputActionValue& Value);
@@ -56,9 +64,10 @@ public:
 	void Sprint(const FInputActionValue& Value);
 	void LeftClick(const FInputActionValue& Value);
 
-private:
-	float WalkSpeed;
-	float SprintSpeed;
-	float BaseTurnRate;
-	float BaseLookUpRate;
+	// Look at function
+	void GetLookAt();
+
+	// Voxel functions
+	void RemoveBlock();
+
 };

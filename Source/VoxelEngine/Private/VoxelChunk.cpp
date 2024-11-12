@@ -18,6 +18,7 @@ AVoxelChunk::AVoxelChunk()
 		VoxelHISM->SetStaticMesh(VoxelMeshAsset.Object);
 	}
 
+	VoxelHISM->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Block);
 	VoxelHISM->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	VoxelHISM->SetCullDistance(0);
 
@@ -198,7 +199,8 @@ void AVoxelChunk::AddVoxelInstance(int32 x, int32 y, int32 z)
 	FVector VoxelWorldPosition = FVector(x * VoxelSize * 2, y * VoxelSize * 2, z * VoxelSize * 2) + ChunkPosition;
 
 	// Create the transform for the voxel block
-	FTransform VoxelTransform(FRotator::ZeroRotator, VoxelWorldPosition, FVector(2.0f, 2.0f, 2.0f));
+	FTransform VoxelTransform(FRotator::ZeroRotator, VoxelWorldPosition, FVector(1.7f, 1.7f, 1.7f));
+	UE_LOG(LogTemp, Log, TEXT("VoxelTransform: %s"), *VoxelTransform.ToString());
 
 	// Add the instance to the HISM and store its index
 	int32 InstanceIndex = VoxelHISM->AddInstance(VoxelTransform, true);
