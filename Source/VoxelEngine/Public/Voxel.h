@@ -1,5 +1,4 @@
 #pragma once
-
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "VoxelChunk.h"  // Include the chunk class
@@ -24,6 +23,13 @@ public:
 	// Voxel size
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Voxel Settings")
 	float VoxelSize;
+
+	// Chunk height
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Voxel Settings")
+	int32 ChunkHeight;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Voxel Settings")
+	FTimespan GenerationTime;
 
 protected:
 	virtual void BeginPlay() override;

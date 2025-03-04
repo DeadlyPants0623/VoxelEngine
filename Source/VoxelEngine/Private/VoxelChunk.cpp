@@ -43,20 +43,21 @@ void AVoxelChunk::Tick(float DeltaTime)
 // Helper to get the index of a voxel in the array
 int32 AVoxelChunk::GetVoxelIndex(int32 x, int32 y, int32 z) const
 {
-    return x + (y * GridSize) + (z * GridSize * GridSize);
+    return x + (y * GridSize) + (z * GridSize * ChunkHeight);
 }
 
 // Initialize the chunk with grid size, voxel size, and chunk position
-void AVoxelChunk::Initialize(int32 InGridSize, float InVoxelSize, FVector InChunkPosition, FVector2D InChunkOffset)
+void AVoxelChunk::Initialize(int32 InGridSize, float InVoxelSize, FVector InChunkPosition, FVector2D InChunkOffset, int32 InChunkHeight)
 {
 	GridSize = InGridSize;
 	VoxelSize = InVoxelSize;
 	ChunkPosition = InChunkPosition;
 	ChunkOffset = InChunkOffset;
+	ChunkHeight = InChunkHeight;  // Set the chunk height
 
-	// Set voxel array size
-	Voxels.SetNum(GridSize * GridSize * GridSize);
-	VoxelInstanceIndices.SetNum(GridSize * GridSize * GridSize);  // Ensure array has correct size
+	// Set voxel array size with ChunkHeight in mind
+	Voxels.SetNum(GridSize * GridSize * ChunkHeight);
+	VoxelInstanceIndices.SetNum(GridSize * GridSize * ChunkHeight);
 }
 
 // Generate voxel data for this chunk (using global coordinates)
@@ -72,9 +73,9 @@ void AVoxelChunk::CalculateVoxels(int32 startX, int32 endX)
 
 			// Generate continuous height using Perlin noise
 			float noiseValue = FMath::PerlinNoise2D(FVector2D(GlobalX, GlobalY) * PerlinScale);
-			int32 height = FMath::Clamp(FMath::RoundToInt(noiseValue * GridSize), 0, GridSize - 1);
+			int32 height = FMath::Clamp(FMath::RoundToInt(noiseValue * ChunkHeight), 0, ChunkHeight - 1);
 
-			for (int32 z = 0; z < GridSize; z++)
+			for (int32 z = 0; z < ChunkHeight; z++)
 			{
 				int32 index = x + (y * GridSize) + (z * GridSize * GridSize);
 				FVoxel voxel;
@@ -98,89 +99,8 @@ void AVoxelChunk::SpawnVoxelBlocks()
 		{
 			// Add the voxel instance to the HISM
 			AddVoxelInstance(voxel.X, voxel.Y, voxel.Z);
-			//// Calculate the world position of the voxel block, adjusting for the chunk's position
-			//FVector VoxelWorldPosition = FVector(voxel.X * VoxelSize * 2, voxel.Y * VoxelSize * 2, voxel.Z * VoxelSize * 2) + ChunkPosition;
-
-			//// Set spawn parameters
-			//FActorSpawnParameters SpawnParams;
-			//SpawnParams.Owner = this;  // The chunk is the owner
-			//SpawnParams.Instigator = GetInstigator();
-
-			//// Spawn the voxel block at the calculated world position
-			//FRotator SpawnRotation = FRotator::ZeroRotator;
-			//AVoxelBlock* VoxelBlock = GetWorld()->SpawnActor<AVoxelBlock>(VoxelWorldPosition, SpawnRotation, SpawnParams);
-
-			//if (VoxelBlock)
-			//{
-				// Set the properties of the voxel block (such as size and grid coordinates)
-				//VoxelBlock->VoxelSize = VoxelSize;
-				//VoxelBlock->X = voxel.X;
-				//VoxelBlock->Y = voxel.Y;
-				//VoxelBlock->Z = voxel.Z;
-
-				// Check and show the appropriate voxel faces based on neighbors
-				// Use a method like CheckAllNeighbors to determine which faces should be shown
-				//CheckAllNeighbors(voxel, VoxelBlock, voxel.X, voxel.Y, voxel.Z);
-
-				
-
-			//}
 		}
 	}
-}
-
-void AVoxelChunk::CheckAllNeighbors(FVoxel& voxel, AVoxelBlock* VoxelBlock, int32 x, int32 y, int32 z)
-{
-	UE_LOG(LogTemp, Display, TEXT("Check Start"));
-	//Check neighbors and show faces if the neighbor is solid
-	if (!CheckNeighbor(voxel.X, voxel.Y, voxel.Z - 1)) // Check below in Z
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Show Bottom Face"));
-		VoxelBlock->UpdateVoxelFace(1); // Bottom face
-	}
-	if (!CheckNeighbor(voxel.X, voxel.Y, voxel.Z + 1)) // Check above in Z
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Show Top Face"));
-		VoxelBlock->UpdateVoxelFace(0); // Top face
-	}
-	if (!CheckNeighbor(voxel.X - 1, voxel.Y, voxel.Z)) // Check front in Y
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Show Front Face"));
-		VoxelBlock->UpdateVoxelFace(2); // Front face
-	}
-	if (!CheckNeighbor(voxel.X + 1, voxel.Y, voxel.Z)) // Check back in Y
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Show Back Face"));
-		VoxelBlock->UpdateVoxelFace(3); // Back face
-	}
-	if (!CheckNeighbor(voxel.X, voxel.Y + 1, voxel.Z)) // Check left in X
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Show Left Face"));
-		VoxelBlock->UpdateVoxelFace(4); // Left face
-	}
-	if (!CheckNeighbor(voxel.X, voxel.Y - 1, voxel.Z)) // Check right in X
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Show Right Face"));
-		VoxelBlock->UpdateVoxelFace(5); // Right face
-	}
-	UE_LOG(LogTemp, Display, TEXT("Check Finish"));
-}
-
-
-bool AVoxelChunk::CheckNeighbor(int32 x, int32 y, int32 z)
-{
-	UE_LOG(LogTemp, Warning, TEXT("Checking neighbor at (%d, %d, %d)"), x, y, z);
-
-	// Check that the position is within bounds
-	if (x < 0 || x >= GridSize || y < 0 || y >= GridSize || z < 0 || z >= GridSize)
-	{
-		return false; // Out of bounds is considered not solid
-	}
-
-	int32 index = x + (y * GridSize) + (z * GridSize * GridSize);
-	bool isSolid = Voxels[index].IsSolid;
-	UE_LOG(LogTemp, Warning, TEXT("Neighbor solid state: %d"), isSolid);
-	return isSolid;
 }
 
 void AVoxelChunk::AddVoxelInstance(int32 x, int32 y, int32 z)
@@ -199,8 +119,8 @@ void AVoxelChunk::AddVoxelInstance(int32 x, int32 y, int32 z)
 	FVector VoxelWorldPosition = FVector(x * VoxelSize * 2, y * VoxelSize * 2, z * VoxelSize * 2) + ChunkPosition;
 
 	// Create the transform for the voxel block
-	FTransform VoxelTransform(FRotator::ZeroRotator, VoxelWorldPosition, FVector(1.7f, 1.7f, 1.7f));
-	UE_LOG(LogTemp, Log, TEXT("VoxelTransform: %s"), *VoxelTransform.ToString());
+	FTransform VoxelTransform(FRotator::ZeroRotator, VoxelWorldPosition, FVector(2, 2, 2));
+	//UE_LOG(LogTemp, Log, TEXT("VoxelTransform: %s"), *VoxelTransform.ToString());
 
 	// Add the instance to the HISM and store its index
 	int32 InstanceIndex = VoxelHISM->AddInstance(VoxelTransform, true);

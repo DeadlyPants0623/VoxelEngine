@@ -142,49 +142,49 @@ void AAvatarBase::GetLookAt()
 		return;
 	}
 
-	// Get the camera location and forward vector
-	FVector CameraLocation;
-	FRotator CameraRotation;
-	PlayerController->GetPlayerViewPoint(CameraLocation, CameraRotation);
-	FVector ForwardVector = CameraRotation.Vector();
+	//// Get the camera location and forward vector
+	//FVector CameraLocation;
+	//FRotator CameraRotation;
+	//PlayerController->GetPlayerViewPoint(CameraLocation, CameraRotation);
+	//FVector ForwardVector = CameraRotation.Vector();
 
-	// Calculate the end location based on the camera's forward vector
-	FVector End = CameraLocation + (ForwardVector * 1000.0f);
+	//// Calculate the end location based on the camera's forward vector
+	//FVector End = CameraLocation + (ForwardVector * 1000.0f);
 
-	// Create a collision query
-	FCollisionQueryParams CollisionParams;
-	CollisionParams.AddIgnoredActor(this);
+	//// Create a collision query
+	//FCollisionQueryParams CollisionParams;
+	//CollisionParams.AddIgnoredActor(this);
 
-	// Create a hit result
-	FHitResult HitResult;
+	//// Create a hit result
+	//FHitResult HitResult;
 
-	// Perform the line trace
-	GetWorld()->LineTraceSingleByChannel(HitResult, CameraLocation, End, ECollisionChannel::ECC_WorldDynamic, CollisionParams);
-	DrawDebugLine(GetWorld(), CameraLocation, End, FColor::Red, false, 1.0f, 0, 1.0f);
+	//// Perform the line trace
+	//GetWorld()->LineTraceSingleByChannel(HitResult, CameraLocation, End, ECollisionChannel::ECC_WorldDynamic, CollisionParams);
+	//DrawDebugLine(GetWorld(), CameraLocation, End, FColor::Red, false, 1.0f, 0, 1.0f);
 
-	// If the line trace hits something
-	if (HitResult.bBlockingHit)
-	{
-		// Get the hit location
-		FVector HitLocation = HitResult.ImpactPoint;
-		TracedLocation = HitLocation;
+	//// If the line trace hits something
+	//if (HitResult.bBlockingHit)
+	//{
+	//	// Get the hit location
+	//	FVector HitLocation = HitResult.ImpactPoint;
+	//	TracedLocation = HitLocation;
 
-		// Get the hit actor
-		AActor* HitActor = HitResult.GetActor();
+	//	// Get the hit actor
+	//	AActor* HitActor = HitResult.GetActor();
 
-		// If the hit actor is valid
-		if (HitActor)
-		{
-			// Get the hit actor's name
-			FString HitActorName = HitActor->GetName();
+	//	// If the hit actor is valid
+	//	if (HitActor)
+	//	{
+	//		// Get the hit actor's name
+	//		FString HitActorName = HitActor->GetName();
 
-			// Print the hit actor's name
-			UE_LOG(LogTemp, Warning, TEXT("Hit Actor: %s"), *HitActorName);
-		}
+	//		// Print the hit actor's name
+	//		UE_LOG(LogTemp, Warning, TEXT("Hit Actor: %s"), *HitActorName);
+	//	}
 
-		// Print the hit location
-		UE_LOG(LogTemp, Warning, TEXT("Hit Location: %s"), *HitLocation.ToString());
-	}
+	//	// Print the hit location
+	//	UE_LOG(LogTemp, Warning, TEXT("Hit Location: %s"), *HitLocation.ToString());
+	//}
 }
 
 void AAvatarBase::RemoveBlock()

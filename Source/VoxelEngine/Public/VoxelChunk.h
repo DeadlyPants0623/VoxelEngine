@@ -36,7 +36,7 @@ public:
 	};
 
 	// Initialize the chunk with the required parameters
-	void Initialize(int32 InGridSize, float InVoxelSize, FVector ChunkPosition, FVector2D ChunkOffset);
+	void Initialize(int32 InGridSize, float InVoxelSize, FVector ChunkPosition, FVector2D ChunkOffset, int32 ChunkHeight);
 
 	// Generate voxel data
 	void CalculateVoxels(int32 startX, int32 endX);
@@ -47,10 +47,6 @@ public:
 	// Clear all voxels
 	void DestroyVoxels();
 
-	void CheckAllNeighbors(FVoxel& voxel, AVoxelBlock* VoxelBlock, int32 x, int32 y, int32 z);
-
-	bool CheckNeighbor(int32 x, int32 y, int32 z);
-
 	// Add a voxel instance to the HISM
 	void AddVoxelInstance(int32 x, int32 y, int32 z);
 
@@ -59,6 +55,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Voxel Mesh")
 	UStaticMesh* VoxelMesh;
+
+	// Hierarchical Instanced Static Mesh component
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Voxel Mesh")
+	UHierarchicalInstancedStaticMeshComponent* VoxelHISM;
 
 protected:
 	// Called when the game starts or when spawned
@@ -76,19 +76,16 @@ private:
 	// Chunk grid size and voxel size
 	int32 GridSize;
 	float VoxelSize;
+	int32 ChunkHeight;
 
 	// Position of the chunk in world space
 	FVector ChunkPosition;
 
 	// Perlin noise scale
-	float PerlinScale = 0.03f;
+	float PerlinScale = 0.1f;
 
 	// Offset to represent the chunk's global position for continuous noise
 	FVector2D ChunkOffset;
-
-	// Hierarchical Instanced Static Mesh component
-	UPROPERTY()
-	UHierarchicalInstancedStaticMeshComponent* VoxelHISM;
 
 	// Array of instance indices for each Chunk
 	TArray<int32> VoxelInstanceIndices;
