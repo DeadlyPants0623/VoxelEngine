@@ -1,0 +1,437 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .page {
+    font-family: 'Barlow', sans-serif;
+    color: var(--color-text-primary);
+    padding: 2rem 1.5rem;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .header {
+    border-bottom: 2px solid #C8172E;
+    padding-bottom: 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .riot-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #C8172E;
+    margin-bottom: 6px;
+  }
+
+  .doc-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+
+  .doc-subtitle {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+  }
+
+  .meta-row {
+    display: flex;
+    gap: 24px;
+    margin-top: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .meta-item {
+    font-size: 12px;
+  }
+
+  .meta-item .label {
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .meta-item .value {
+    font-weight: 500;
+    font-size: 13px;
+  }
+
+  .notice {
+    background: var(--color-background-secondary);
+    border-left: 3px solid #C8172E;
+    padding: 12px 16px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin-bottom: 2rem;
+    border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+  }
+
+  .notice strong {
+    color: var(--color-text-primary);
+    font-weight: 500;
+  }
+
+  .assignment {
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+
+  .assignment-header {
+    padding: 1rem 1.25rem;
+    background: var(--color-background-secondary);
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .assignment-number {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #C8172E;
+    margin-bottom: 4px;
+  }
+
+  .assignment-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    line-height: 1.1;
+  }
+
+  .assignment-tagline {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin-top: 2px;
+  }
+
+  .badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .badge-red { background: #FAECE7; color: #993C1D; }
+  .badge-amber { background: #FAEEDA; color: #854F0B; }
+  .badge-green { background: #EAF3DE; color: #3B6D11; }
+
+  .assignment-body {
+    padding: 1.25rem;
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    margin-bottom: 8px;
+    margin-top: 1.25rem;
+  }
+
+  .section-label:first-child { margin-top: 0; }
+
+  .scenario-box {
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-md);
+    padding: 12px 14px;
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+    font-style: italic;
+    border-left: 2px solid var(--color-border-secondary);
+  }
+
+  .task-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .task-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--color-text-primary);
+    padding: 8px 10px;
+    border-radius: var(--border-radius-md);
+    border: 0.5px solid var(--color-border-tertiary);
+    background: var(--color-background-primary);
+  }
+
+  .task-check {
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid var(--color-border-secondary);
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .eval-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 8px;
+  }
+
+  .eval-card {
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-md);
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .eval-card .eval-icon {
+    font-size: 16px;
+    margin-bottom: 4px;
+    color: #C8172E;
+  }
+
+  .eval-card .eval-title {
+    font-weight: 500;
+    font-size: 12px;
+    color: var(--color-text-primary);
+    margin-bottom: 2px;
+  }
+
+  .eval-card .eval-desc {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+
+  .divider {
+    height: 0.5px;
+    background: var(--color-border-tertiary);
+    margin: 1.25rem 0;
+  }
+
+  .submission-section {
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+
+  .submission-header {
+    background: var(--color-background-secondary);
+    padding: 10px 1.25rem;
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+  }
+
+  .submission-header span {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+  }
+
+  .submission-body {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .req-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .req-bullet {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #C8172E;
+    flex-shrink: 0;
+    margin-top: 7px;
+  }
+
+  .footer-note {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    text-align: center;
+    padding-top: 1rem;
+    border-top: 0.5px solid var(--color-border-tertiary);
+    line-height: 1.6;
+  }
+</style>
+
+<div class="page">
+  <div class="header">
+    <div class="riot-label">Riot Games · Unreal Ecosystem (UnEco) · Engineering</div>
+    <div class="doc-title">Take-Home Technical Assignment</div>
+    <div class="doc-subtitle">Unreal Ecosystem Support — C++ & UE5 Track</div>
+    <div class="meta-row">
+      <div class="meta-item"><span class="label">Role</span><span class="value">Unreal Ecosystem Support Engineer</span></div>
+      <div class="meta-item"><span class="label">Engine</span><span class="value">Unreal Engine 5.3+</span></div>
+      <div class="meta-item"><span class="label">Time estimate</span><span class="value">4–8 hours total</span></div>
+      <div class="meta-item"><span class="label">Language</span><span class="value">C++ (no Blueprint-only solutions)</span></div>
+    </div>
+  </div>
+
+  <div class="notice">
+    <strong>Before you begin:</strong> You are expected to pick <strong>one assignment</strong> from the three below. Each is scoped to a realistic problem our internal game teams face. We are not looking for perfection — we are looking for how you think, structure systems, and communicate decisions. Read all three before choosing.
+  </div>
+
+  <!-- ASSIGNMENT 1 -->
+  <div class="assignment">
+    <div class="assignment-header">
+      <div>
+        <div class="assignment-number">Assignment 01</div>
+        <div class="assignment-title">The Diagnostic Plugin</div>
+        <div class="assignment-tagline">Plugin architecture · Subsystems · Runtime tooling</div>
+      </div>
+      <span class="badge badge-green">Recommended starting point</span>
+    </div>
+    <div class="assignment-body">
+
+      <div class="section-label">Scenario</div>
+      <div class="scenario-box">
+        A game team is reporting intermittent slowdowns and crashes during development but can't pinpoint the source. They need a lightweight diagnostic plugin they can drop into any UE5 project without modifying game code. You've been asked to build it.
+      </div>
+
+      <div class="section-label">Deliverables</div>
+      <ul class="task-list">
+        <li class="task-item"><div class="task-check"></div>Create a C++ plugin named <code>RiotDiagnostics</code> with correct <code>.uplugin</code> and <code>Build.cs</code> structure</li>
+        <li class="task-item"><div class="task-check"></div>Implement a <code>UGameInstanceSubsystem</code> that on <code>Initialize()</code> logs: total actor count, platform memory stats via <code>FPlatformMemory::GetStats()</code>, and loaded asset count via <code>FAssetRegistryModule</code></li>
+        <li class="task-item"><div class="task-check"></div>Register a console command <code>riot.diag.dump</code> that re-triggers the full diagnostic report at any point during PIE</li>
+        <li class="task-item"><div class="task-check"></div>Define and use a custom log category <code>LogRiotDiag</code> consistently across all plugin files</li>
+        <li class="task-item"><div class="task-check"></div>Write the diagnostic output to a timestamped <code>.txt</code> file under <code>Saved/Diagnostics/</code></li>
+      </ul>
+
+      <div class="section-label">What we're evaluating</div>
+      <div class="eval-grid">
+        <div class="eval-card"><div class="eval-icon"><i class="ti ti-puzzle" aria-hidden="true"></i></div><div class="eval-title">Plugin structure</div><div class="eval-desc">Correct module layout, no shortcuts</div></div>
+        <div class="eval-card"><div class="eval-icon"><i class="ti ti-circuit-switchboard" aria-hidden="true"></i></div><div class="eval-title">Subsystem lifecycle</div><div class="eval-desc">Proper Initialize / Deinitialize usage</div></div>
+        <div class="eval-card"><div class="eval-icon"><i class="ti ti-api" aria-hidden="true"></i></div><div class="eval-title">Engine API fluency</div><div class="eval-desc">Use of FAssetRegistry, FPlatformMemory</div></div>
+        <div class="eval-card"><div class="eval-icon"><i class="ti ti-file-text" aria-hidden="true"></i></div><div class="eval-title">Code clarity</div><div class="eval-desc">Readable by a game team engineer</div></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ASSIGNMENT 2 -->
+  <div class="assignment">
+    <div class="assignment-header">
+      <div>
+        <div class="assignment-number">Assignment 02</div>
+        <div class="assignment-title">The Asset Validator</div>
+        <div class="assignment-tagline">Commandlet · Pipeline tooling · Automation tests · Editor extensions</div>
+      </div>
+      <span class="badge badge-amber">Intermediate</span>
+    </div>
+    <div class="assignment-body">
+
+      <div class="section-label">Scenario</div>
+      <div class="scenario-box">
+        Riot's art pipeline requires all StaticMesh assets to follow strict naming and LOD conventions. Meshes that don't comply cause downstream build failures. You've been asked to build a tool that validates these rules automatically — both from the command line and from within the editor.
+      </div>
+
+      <div class="section-label">Deliverables</div>
+      <ul class="task-list">
+        <li class="task-item"><div class="task-check"></div>Create a C++ plugin named <code>RiotAssetValidator</code> with proper editor-only module separation in <code>Build.cs</code></li>
+        <li class="task-item"><div class="task-check"></div>Implement a <code>UCommandlet</code> that accepts a content directory path as an argument and flags any <code>StaticMesh</code> that: does not begin with <code>SM_</code>, is missing LOD1, or exceeds a triangle count threshold configurable via <code>DefaultRiotValidator.ini</code></li>
+        <li class="task-item"><div class="task-check"></div>Output a validation report to <code>Saved/ValidationReports/report.csv</code> with columns: asset path, violation type, detail</li>
+        <li class="task-item"><div class="task-check"></div>Add an editor toolbar button or Editor Utility that runs the same validation scoped to assets used in the currently open level only</li>
+        <li class="task-item"><div class="task-check"></div>Write at least one <code>FAutomationTestBase</code> test that validates your commandlet logic against mock asset data</li>
+      </ul>
+
+      <div class="section-label">What we're evaluating</div>
+      <div class="eval-grid">
+        <div class="eval-card"><div class="eval-icon"><i class="ti ti-settings-2" aria-hidden="true"></i></div><div class="eval-title">Build.cs discipline</div><div class="eval-desc">Runtime vs editor module split</div></div>
+        <div class="eval-card"><div class="eval-icon"><i class="ti ti-terminal" aria-hidden="true"></i></div><div class="eval-title">Commandlet pattern</div><div class="eval-desc">Core of Riot's pipeline tooling</div></div>
+        <div class="eval-card"><div class="eval-icon"><i class="ti ti-test-pipe" aria-hidden="true"></i></div><div class="eval-title">Testable code</div><div class="eval-desc">Logic separated from UE5 glue</div></div>
+        <div class="eval-card"><div class="eval-icon"><i class="ti ti-layout-sidebar" aria-hidden="true"></i></div><div class="eval-title">Editor integration</div><div class="eval-desc">Clean toolbar or utility hook</div></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ASSIGNMENT 3 -->
+  <div class="assignment">
+    <div class="assignment-header">
+      <div>
+        <div class="assignment-number">Assignment 03</div>
+        <div class="assignment-title">The Ecosystem Bridge</div>
+        <div class="assignment-tagline">Interop · Memory safety · Slate · System design</div>
+      </div>
+      <span class="badge badge-red">Advanced</span>
+    </div>
+    <div class="assignment-body">
+
+      <div class="section-label">Scenario</div>
+      <div class="scenario-box">
+        A game team needs a lightweight event broadcasting system that works seamlessly across C++, Blueprint, and editor tools — without any of those layers needing to know about each other. You've been asked to design and build this system as a standalone plugin.
+      </div>
+
+      <div class="section-label">Deliverables</div>
+      <ul class="task-list">
+        <li class="task-item"><div class="task-check"></div>Create a C++ plugin named <code>RiotEventBus</code></li>
+        <li class="task-item"><div class="task-check"></div>Implement a <code>UGameInstanceSubsystem</code> that allows any C++ class to register a listener against a named <code>FGameplayTag</code> event</li>
+        <li class="task-item"><div class="task-check"></div>Expose a <code>UFUNCTION(BlueprintCallable)</code> method <code>BroadcastEvent(FGameplayTag Tag, FString Payload)</code> callable from Blueprint</li>
+        <li class="task-item"><div class="task-check"></div>Use <code>TWeakObjectPtr</code> for listener storage so that listeners owned by GC'd objects are automatically cleaned up without crashing</li>
+        <li class="task-item"><div class="task-check"></div>Provide a minimal working demo: one Blueprint actor broadcasts <code>Event.Player.Died</code>, one C++ actor listens and logs the payload</li>
+        <li class="task-item"><div class="task-check"></div>Add a Slate-based editor tab showing a live event feed during PIE — displaying tag name, payload, and timestamp for each broadcast</li>
+      </ul>
+
+      <div class="section-label">What we're evaluating</div>
+      <div class="eval-grid">
+        <div class="eval-card"><div class="eval-icon"><i class="ti ti-arrows-exchange" aria-hidden="true"></i></div><div class="eval-title">C++ ↔ BP interop</div><div class="eval-desc">Correct UFUNCTION exposure</div></div>
+        <div class="eval-card"><div class="eval-icon"><i class="ti ti-shield-check" aria-hidden="true"></i></div><div class="eval-title">Memory safety</div><div class="eval-desc">TWeakObjectPtr listener cleanup</div></div>
+        <div class="eval-card"><div class="eval-icon"><i class="ti ti-layout-2" aria-hidden="true"></i></div><div class="eval-title">Slate basics</div><div class="eval-desc">Functional editor panel</div></div>
+        <div class="eval-card"><div class="eval-icon"><i class="ti ti-topology-star" aria-hidden="true"></i></div><div class="eval-title">System design</div><div class="eval-desc">Can you explain the why, not just the what</div></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SUBMISSION REQUIREMENTS -->
+  <div class="submission-section">
+    <div class="submission-header"><span>Submission requirements — all assignments</span></div>
+    <div class="submission-body">
+      <div class="req-row"><div class="req-bullet"></div><span>A <code>README.md</code> explaining what you built, the key decisions you made, and what you would improve with more time</span></div>
+      <div class="req-row"><div class="req-bullet"></div><span>Clean Git history with meaningful commit messages — we will read your commits</span></div>
+      <div class="req-row"><div class="req-bullet"></div><span>Code must compile on UE5.3+ with zero warnings</span></div>
+      <div class="req-row"><div class="req-bullet"></div><span>No Blueprint-only solutions — all logic must be driven from C++. Blueprint use for demo wiring is fine</span></div>
+      <div class="req-row"><div class="req-bullet"></div><span>Do not submit AI-generated code you cannot explain line by line. We will ask you about every decision in the follow-up interview</span></div>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    Questions about scope or requirements? Email your recruiter. Do not ask for hints on implementation — part of what we are evaluating is how you navigate ambiguity independently.<br><br>
+    Good luck. We're excited to see how you think.
+  </div>
+</div>
