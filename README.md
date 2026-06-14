@@ -9,7 +9,7 @@ VoxelEngine is an Unreal Engine 5.7 sandbox project focused on procedural voxel 
 
 ## Getting Started
 
-1. Open `/home/runner/work/VoxelEngine/VoxelEngine/DeadlyPants0623/VoxelEngine/VoxelEngine.uproject` in Unreal Engine 5.7.
+1. Open `VoxelEngine.uproject` in Unreal Engine 5.7.
 2. Let Unreal generate project files if prompted.
 3. Open the default map (`/Game/Map/NewTestMap`).
 4. Click **Play**.
